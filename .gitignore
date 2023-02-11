@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define ROWS 8
+#define COLS 8
+
+char board[ROWS][COLS];
+
+void init_board(void);
+void print_board(void);
+int move_piece(int x1, int y1, int x2, int y2);
+
+int main(void) {
+   int x1, y1, x2, y2;
+
+   init_board();
+   while (1) {
+      print_board();
+      printf("Enter the coordinates of the piece you want to move (x1 y1 x2 y2): ");
+      scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
+      if (!move_piece(x1, y1, x2, y2)) {
+         printf("Invalid move, try again\n");
+         continue;
+      }
+   }
+
+   return 0;
+}
+
+void init_board(void) {
+   int i, j;
+
+   for (i = 0; i < ROWS; i++) {
+      for (j = 0; j < COLS; j++) {
+         board[i][j] = '-';
+      }
+   }
+}
+
+void print_board(void) {
+   int i, j;
+
+   printf("  0 1 2 3 4 5 6 7\n");
+   for (i = 0; i < ROWS; i++) {
+      printf("%d ", i);
+      for (j = 0; j < COLS; j++) {
+         printf("%c ", board[i][j]);
+      }
+      printf("\n");
+   }
+}
+
+int move_piece(int x1, int y1, int x2, int y2) {
+   if (x1 < 0 || x1 >= ROWS || y1 < 0 || y1 >= COLS ||
+       x2 < 0 || x2 >= ROWS || y2 < 0 || y2 >= COLS) {
+      return 0;
+   }
+
+   if (board[x1][y1] == '-') {
+      return 0;
+   }
+
+   board[x2][y2] = board[x1][y1];
+   board[x1][y1] = '-';
+
+   return 1;
+}
